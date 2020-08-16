@@ -1,0 +1,117 @@
+
+<!doctype html>
+<html>
+   <head>
+      <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> 
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+      <style>
+         *{
+            transition:all 0.2s ease-in;
+         }
+         body{
+            margin:0;
+            padding:0;
+            width:100%;
+            height: 100%;
+         }
+         .topIconWrapper{
+            padding:15px;
+         }
+         .topIconWrapper i{
+            float:right;
+            color:white;
+            font-size:26px;
+            width:26px;
+            text-align: center;
+         }
+         .topIconWrapper i:hover{
+            cursor: pointer;
+            font-size: 30px;
+            width:30px;
+         }
+         .fa-minus:before{content:"\f068" !important;}
+         .searchbarWrapper{
+            position:absolute;
+            top:0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width:100%;
+            height: 100vh;
+            z-index: -1;
+         }
+         input[type=text]{
+            background-color:transparent;
+            color:white;
+            padding:8px 12px;
+            border: none;
+            border-bottom: 2px solid white;
+            text-align:center;
+            width:300px;
+            font-family: 'Nunito', sans-serif;
+         }
+         input[type=text].big{
+            width:900px;
+            font-size:50px;
+            border-bottom-width: 6px;
+         }
+      </style>
+   </head>
+   <body onload="setSearch()">
+
+      <div class="topIconWrapper">
+         <i class="icon fas fa-plus"></i>
+      </div>
+
+      <div class="searchbarWrapper">
+         <div id="searchbar">
+            <input type="text" id="search" autocomplete="off" value="explore the web!" autofocus onkeydown="setSearch()" onkeyup="setSearch()" onkeypress="setSearch()">
+         </div>
+      </div>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script>
+         
+         function setSearch() {
+           searchContent = document.getElementById('search').value;
+         
+          var stringToColour = function(str) {
+             var hash = 0;
+             for (var i = 0; i < str.length; i++) {
+                 hash = str.charCodeAt(i) + ((hash << 5) - hash);
+             }
+             var colour = '#';
+             for (var i = 0; i < 3; i++) {
+                 var value = (hash >> (i * 8)) & 0xFF;
+                 colour += ('00' + value.toString(16)).substr(-2);
+             }
+             return colour;
+           }
+         
+            $('body').css('background-color', stringToColour(searchContent));
+
+            $('#search').keypress(function(e){
+                 if(e.which == 13){//Enter key pressed
+                     window.location = "https://duckduckgo.com/?q=" + searchContent;
+                 }
+             });
+         }
+
+         $(".icon").click(function(){
+            $("input").toggleClass( "big" );
+            $(".fas").toggleClass("fa-minus");
+         });
+
+         $("*:not(#searchbar)").keypress(function(key){
+            if (key.which == 45){
+                $("input").removeClass( "big" );
+                $(".fas").removeClass("fa-minus");
+            }
+             if (key.which == 43){
+                 $("input").addClass( "big" );
+                 $(".fas").addClass("fa-minus");
+             }
+         });
+      </script>
+   </body>
+</html>
